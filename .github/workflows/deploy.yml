@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
-      - run: npm install --no-audit --no-fund
+      - run: npm install --legacy-peer-deps --no-audit --no-fund
       - run: npm run build
         env:
           CI: false
