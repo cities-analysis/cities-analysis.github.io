@@ -74,6 +74,8 @@ def load_dict(path, name):
 COLUMN_NAMES = load_dict(BACKEND / 'api' / 'calculations.py', 'COLUMNS_NAMES_CITIES')
 CITY_COORDS = json.loads((UPLOAD / 'city_coordinates.json').read_text(encoding='utf-8'))
 REGION_COORDS = load_dict(BACKEND / 'regions_coordinates.py', 'regions_coordinates')
+if (UPLOAD / 'region_coordinates.json').exists():  # дополнения к координатам регионов
+    REGION_COORDS.update(json.loads((UPLOAD / 'region_coordinates.json').read_text(encoding='utf-8')))
 
 
 def read_csv(name):
