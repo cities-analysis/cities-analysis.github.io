@@ -3,6 +3,8 @@ import { Image, Space } from 'antd'
 import Style from './Style'
 import certImage from '../../images/DB_certificate.png'
 import certImageSmall from '../../images/DB_certificate_small.png'
+import certImage2 from '../../images/certificate_2.png'
+import certImage2Small from '../../images/certificate_2_small.png'
 
 export const URL = window.location.origin
 
@@ -16,13 +18,22 @@ class Home extends PureComponent {
                         эшелона (на примере Свердловской, Челябинской, Кемеровской, Томской
                         областей, Алтайского края и Ханты-Мансийского автономного округов)
                     </h3>
-                    <Image
-                        width={300}
-                        src={certImageSmall}
-                        preview={{
-                            src: certImage,
-                        }}
-                    />
+                    <Space direction='horizontal'>
+                        <Image
+                            width={300}
+                            src={certImageSmall}
+                            preview={{
+                                src: certImage,
+                            }}
+                        />
+                        <Image
+                            width={300}
+                            src={certImage2Small}
+                            preview={{
+                                src: certImage2,
+                            }}
+                        />
+                    </Space>
                 </Space>
             </div>
         )

@@ -9,10 +9,8 @@ import { URL as HomeURL } from '../../pages/Home/Home'
 // import { URL as AnalysisURL } from '../../pages/Analysis/Analysis'
 import { URL as ChartsURL } from '../../pages/Charts/Charts'
 import { URL as CI_URL } from '../../pages/CI/CI'
-import { URL as DataURL, URL_OLD as DataOldUrl } from '../../pages/Data/Data'
 import { URL as MapURL } from '../../pages/Map/Map'
 import { URL as NewMapURL } from '../../pages/NewMap/NewMap'
-import { SERVER } from '../../constants'
 /* eslint-disable-next-line import/named */
 
 class Header extends Component {
@@ -24,19 +22,16 @@ class Header extends Component {
             isChartsHovered: false,
             // isAnalysisHovered: false,
             isCIHovered: false,
-            isDataUploadHovered: false,
             isMapActive: false,
             isNewMapActive: false,
             isChartsActive: false,
             // isAnalysisActive: false,
             isCIActive: false,
-            isDataUploadActive: false,
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.updateActiveTab()
-        await fetch(SERVER)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,7 +52,6 @@ class Header extends Component {
                 isChartsActive: false,
                 // isAnalysisActive: false,
                 isCIActive: false,
-                isDataUploadActive: false,
             })
         } else {
             this.setState({
@@ -66,9 +60,6 @@ class Header extends Component {
                 isChartsActive: currentPath.some((path) => path === ChartsURL),
                 // isAnalysisActive: currentPath.some((path) => path === AnalysisURL),
                 isCIActive: currentPath.some((path) => path === CI_URL),
-                isDataUploadActive: currentPath.some(
-                    (path) => path === DataURL || path === DataOldUrl
-                ),
             })
         }
     }
@@ -154,21 +145,6 @@ class Header extends Component {
                     <LinkDiv to={CI_URL}>
                         <a style={Style.text} href={CI_URL}>
                             Дашборды креативных индустрий
-                        </a>
-                    </LinkDiv>
-                </div>
-                <div
-                    style={
-                        this.state.isDataUploadHovered || this.state.isDataUploadActive
-                            ? Style.buttonHovered
-                            : Style.button
-                    }
-                    onMouseEnter={() => this.setState({ isDataUploadHovered: true })}
-                    onMouseLeave={() => this.setState({ isDataUploadHovered: false })}
-                >
-                    <LinkDiv to={DataURL}>
-                        <a style={Style.text} href={DataURL}>
-                            Данные
                         </a>
                     </LinkDiv>
                 </div>

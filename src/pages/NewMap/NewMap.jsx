@@ -23,6 +23,7 @@ import region3 from '../../regionsBorders/СвердловскаяОбласть
 import region4 from '../../regionsBorders/ТомскаяОбласть.json'
 import region5 from '../../regionsBorders/ХантыМансийскийАвтономныйОкруг.json'
 import region6 from '../../regionsBorders/ЧелябинскаяОбласть.json'
+import region7 from '../../regionsBorders/РеспубликаХакасия.json'
 
 const { Text } = Typography
 
@@ -79,7 +80,7 @@ class NewMap extends PureComponent {
         this.state = {
             year: props.years.cityYears?.[0],
             colors: getColor.colors(gradientColors.length),
-            selectedParameter: PARAMETERS[0].title,
+            selectedParameter: PARAMETERS[0].id,
             parameterPostfix: PARAMETERS[0].postfix,
             min: undefined,
             max: undefined,
@@ -194,7 +195,7 @@ class NewMap extends PureComponent {
 
     renderGeoJSONRegions() {
         const { selectedParameter } = this.state
-        return [region1, region2, region3, region4, region5, region6].map((region) => (
+        return [region1, region2, region3, region4, region5, region6, region7].map((region) => (
             <GeoJSON
                 key={`region${region.id}${selectedParameter}`}
                 data={region}
@@ -367,7 +368,7 @@ class NewMap extends PureComponent {
                         <a href="https://mydata.biz/ru/catalog/databases/borders_ru">муниципальным делением РФ</a>'
                         />
                         {showRegionBorders ? this.renderGeoJSONRegions() : undefined}
-                        {this.renderGeoJSONCities()}
+                        {calculations?.data?.length > 0 ? this.renderGeoJSONCities() : undefined}
                     </MapContainer>
                 </div>
             </div>

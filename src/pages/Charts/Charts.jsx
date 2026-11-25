@@ -192,9 +192,9 @@ class Charts extends PureComponent {
                                     else
                                         this.setState({
                                             selectedCities: _cities.sort(),
-                                            filteredCalculations: calculations.data?.filter(
+                                            filteredCalculations: calculations?.data?.filter(
                                                 (calculation) =>
-                                                    _cities.includes(calculation.city) &&
+                                                    _cities?.includes(calculation.city) &&
                                                     ((!selectedYears.includes('all') &&
                                                         selectedYears.includes(calculation.year)) ||
                                                         selectedYears.includes('all'))

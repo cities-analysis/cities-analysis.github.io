@@ -3,6 +3,7 @@ import * as types from '../types'
 const initialState = {
     isRegion: false,
     indexed: false,
+    ciVersion: 'old',
 }
 
 function settingsReducer(state = initialState, action = {}) {
@@ -17,6 +18,12 @@ function settingsReducer(state = initialState, action = {}) {
             return {
                 ...state,
                 indexed: action.indexed,
+            }
+        }
+        case types.SWITCH_CI_VERSION: {
+            return {
+                ...state,
+                ciVersion: action.ciVersion,
             }
         }
         default: {

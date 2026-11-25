@@ -31,12 +31,16 @@ class CI extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { cities, getCIInfo, ciInfo, settings } = this.props
+        const { cities, getCIInfo, ciInfo, settings, getCICategories } = this.props
         const { currentCityIndex, previouslySelectedYear } = this.state
-        if (settings.indexed !== prevProps.settings.indexed) {
+        if (
+            settings.indexed !== prevProps.settings.indexed ||
+            settings.ciVersion !== prevProps.settings.ciVersion
+        ) {
             const { currentYear } = this.state
-            this.setState({ previouslySelectedYear: currentYear })
+            this.setState({ previouslySelectedYear: currentYear, selectedCategory: undefined })
             getCIInfo(cities.data[currentCityIndex])
+            getCICategories()
         }
         if (cities?.data?.length > 0 && !cities?.isLoading && prevProps?.cities?.isLoading) {
             this.setState({ currentCityIndex: 0 })
@@ -261,7 +265,7 @@ class CI extends PureComponent {
         const years = Object.keys(ciInfo?.data ?? {})
         return (
             <div>
-                <SettingsSwitch switchIsRegionEnabled={false} />
+                <SettingsSwitch switchIsRegionEnabled={false} switchCiVersionEnabled />
                 <div style={Style.ci}>
                     <Space direction='vertical' style={Style.container}>
                         <h1>Показатели креативных индустрий</h1>

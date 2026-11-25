@@ -13,3 +13,10 @@ export function switchIndexed(indexed) {
         indexed,
     }
 }
+
+export function switchCiVersion(ciVersion) {
+    return {
+        type: types.SWITCH_CI_VERSION,
+        ciVersion,
+    }
+}

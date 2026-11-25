@@ -1,6 +1,5 @@
-export const SERVER = 'https://grantproject.pythonanywhere.com'
-
-export const SERVER_APP = `${SERVER}/cities_analysis`
+// Статические данные, собираемые из приватного репозитория при сборке сайта (scripts/build_data.py)
+export const DATA_URL = `${process.env.PUBLIC_URL || ''}/data`
 
 export const PARAMETERS = [
     {

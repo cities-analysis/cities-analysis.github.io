@@ -136,6 +136,18 @@ import city135 from './Советский.json'
 import city136 from './Лянтор.json'
 import city137 from './Пласт.json'
 import city138 from './Полевской.json'
+import city139 from './Абаза.json'
+import city140 from './Абакан.json'
+import city141 from './Саяногорск.json'
+import city142 from './Сорск.json'
+import city143 from './Черногорск.json'
+import city144 from './Аскиз.json'
+import city145 from './Бискамжа.json'
+import city146 from './Вершина Теи.json'
+import city147 from './Майна.json'
+import city148 from './Пригорск.json'
+import city149 from './Усть-Абакан.json'
+import city150 from './Черемушки.json'
 
 export const selectBorder = (city) => {
     switch (city) {
@@ -415,6 +427,30 @@ export const selectBorder = (city) => {
             return city137
         case 'Полевской':
             return city138
+        case 'Абаза':
+            return city139
+        case 'Абакан':
+            return city140
+        case 'Саяногорск':
+            return city141
+        case 'Сорск':
+            return city142
+        case 'Черногорск':
+            return city143
+        case 'Аскиз':
+            return city144
+        case 'Бискамжа':
+            return city145
+        case 'Вершина Теи':
+            return city146
+        case 'Майна':
+            return city147
+        case 'Пригорск':
+            return city148
+        case 'Усть-Абакан':
+            return city149
+        case 'Черемушки':
+            return city150
         default:
             return undefined
     }

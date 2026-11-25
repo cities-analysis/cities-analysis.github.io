@@ -5,7 +5,6 @@ import Home, { URL as HomeURL } from './pages/Home/Home'
 import Analysis, { URL as AnalysisURL } from './pages/Analysis/Analysis'
 import Charts, { URL as ChartsURL } from './pages/Charts/Charts'
 import CI, { URL as CI_URL } from './pages/CI/CI'
-import Data, { URL as DataURL, URL_OLD as DataOldUrl } from './pages/Data/Data'
 import Map, { URL as MapURL } from './pages/Map/Map'
 import NewMap, { URL as NewMapURL } from './pages/NewMap/NewMap'
 import Header from './components/Header/Header'
@@ -23,10 +22,6 @@ class App extends PureComponent {
                         <Route path={NewMapURL} element={<NewMap />} />
                         <Route path={ChartsURL} element={<Charts />} />
                         <Route path={AnalysisURL} element={<Analysis />} />
-                        {[DataURL, DataOldUrl].map((path) => (
-                            <Route path={path} element={<Data />} key={path} />
-                        ))}
-                        {/* <Route path={DataURL} element={<Data />} /> */}
                         <Route path={CI_URL} element={<CI />} />
                         {/* <Route path={'*'} element={<Home />} /> */}
                         {['*', HomeURL].map((path) => (
