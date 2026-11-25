@@ -1,0 +1,55 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:prettier/recommended",
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "rules": {
+        "react/destructuring-assignment": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "no-param-reassign": ["error", { "props": false }],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "import/no-extraneous-dependencies": "off",
+        "react/forbid-prop-types": "off",
+        "no-unused-vars": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "import/prefer-default-export": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "prettier/prettier": ["error", {
+            "parser": "babel",
+            "semi": false,
+            "tabWidth": 4,
+            "printWidth": 100,
+            "singleQuote": true,
+            "jsxSingleQuote": true,
+            "trailingComma" : "es5",
+            "useTabs" : false,
+            "bracketSpacing" : true,
+            "jsxBracketSameLine" : false,
+            "arrowParens" : "always",
+            "rangeStart" : 0,
+            "requirePragma" : false,
+            "insertPragma" : false,
+            "proseWrap" : "preserve",
+            "endOfLine": "auto"
+        }]
+    }
+}

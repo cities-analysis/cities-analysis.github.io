@@ -1,0 +1,57 @@
+const Style = {
+    container: {
+        width: '100%',
+        minInlineSize: '1000px',
+        height: '100px',
+        backgroundColor: 'rgba(34,103,115,0.68)',
+        display: 'flex',
+        justifyContent: 'end',
+    },
+    home: {
+        height: '100%',
+        width: '40%',
+        userSelect: 'none',
+        cursor: 'pointer',
+    },
+    button: {
+        height: '100%',
+        width: '15%',
+        userSelect: 'none',
+        cursor: 'pointer',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonHovered: {
+        height: '100%',
+        width: '15%',
+        userSelect: 'none',
+        cursor: 'pointer',
+        backgroundColor: 'rgba(0,0,0,0.1)',
+    },
+    text: {
+        color: '#ffffff',
+        fontSize: 20,
+        textAlign: 'center',
+        textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+    },
+    title: {
+        color: '#ffffff',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: 0,
+        textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'center',
+    },
+}
+
+export default Style
