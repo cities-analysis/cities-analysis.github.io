@@ -77,7 +77,7 @@ def load_dict(path, name):
 
 COLUMN_NAMES = load_dict(BACKEND / 'api' / 'calculations.py', 'COLUMNS_NAMES_CITIES')
 COLUMN_NAMES.update({
-    'ssch': 'Среднесписочная численность работников (ССЧ)',
+    'ssch': 'Среднесписочная численность работников',
     'labor_productivity': 'Производительность труда',
     'capital_labor_ratio': 'Трудовооруженность',
     'avg_labor_cost': 'Средняя оплата труда',

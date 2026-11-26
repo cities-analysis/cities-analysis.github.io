@@ -131,7 +131,7 @@ class Map extends PureComponent {
                             <table style={Style.table}>
                                 <tbody>
                                     <tr>
-                                        <td>Среднесписочная численность (ССЧ):</td>
+                                        <td>Среднесписочная численность работников:</td>
                                         <td style={Style.tableData}>
                                             {convertNumber(calculation.ssch, { postfix: 'чел.' })}
                                         </td>
@@ -294,7 +294,7 @@ class Map extends PureComponent {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Среднесписочная численность (ССЧ):</td>
+                                        <td>Среднесписочная численность работников:</td>
                                         <td style={Style.tableData}>
                                             {convertNumber(calculation.ssch, { postfix: 'чел.' })}
                                         </td>
