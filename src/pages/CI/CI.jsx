@@ -38,7 +38,10 @@ class CI extends PureComponent {
             settings.ciVersion !== prevProps.settings.ciVersion
         ) {
             const { currentYear } = this.state
-            this.setState({ previouslySelectedYear: currentYear, selectedCategory: undefined })
+            this.setState({
+                previouslySelectedYear: currentYear,
+                selectedCategory: undefined,
+            })
             getCIInfo(cities.data[currentCityIndex])
             getCICategories()
         }
@@ -67,6 +70,62 @@ class CI extends PureComponent {
             previouslySelectedYear: currentYear,
         })
         getCIInfo(cities?.data?.[index])
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    renderLaborInfo(currentInfo, currentCIInfo) {
+        const items = [
+            {
+                field: 'ssch',
+                label: 'ССЧ:',
+                title: 'Среднесписочная численность работников',
+                postfix: 'чел.',
+            },
+            {
+                field: 'labor_productivity',
+                label: 'Производительность труда:',
+                title: 'Выручка / ССЧ',
+                postfix: '₽',
+            },
+            {
+                field: 'capital_labor_ratio',
+                label: 'Трудовооруженность:',
+                title: 'Основные средства / ССЧ',
+                postfix: '₽',
+            },
+            {
+                field: 'avg_labor_cost',
+                label: 'Средняя оплата труда:',
+                title: 'Оплата труда / ССЧ',
+                postfix: '₽',
+            },
+        ]
+        const format = (value, postfix) =>
+            value === undefined || value === null
+                ? 'нет данных'
+                : convertNumber(value, { postfix, useShortVersion: true })
+        return [items.slice(0, 2), items.slice(2)].map((row) => (
+            <Space direction='horizontal' key={row[0].field}>
+                {row.map(({ field, label, title, postfix }) => (
+                    <React.Fragment key={field}>
+                        <Text style={Style.text}>{label}</Text>
+                        {currentInfo ? (
+                            <div>
+                                <Tooltip title={`${title} — предприятия в области КИ`}>
+                                    {format(currentCIInfo?.[field], postfix)}
+                                </Tooltip>
+                                {' / '}
+                                <Tooltip title={`${title} — все предприятия`}>
+                                    {format(currentInfo?.[field], postfix)}
+                                </Tooltip>
+                            </div>
+                        ) : (
+                            <Skeleton.Button active size='small' />
+                        )}
+                    </React.Fragment>
+                ))}
+            </Space>
+        ))
     }
 
     renderPieOrgsAndIp(categoryId, parameter) {
@@ -517,6 +576,7 @@ class CI extends PureComponent {
                                                 <Skeleton.Button active size='small' />
                                             )}
                                         </Space>
+                                        {this.renderLaborInfo(currentInfo, currentCIInfo)}
                                     </Space>
                                 </div>
                             </Space>
@@ -721,11 +781,7 @@ class CI extends PureComponent {
                                                           category.id
                                                       ].orgs.most_profitable.map((org, index) => (
                                                           <Text key={org.org} style={Style.orgName}>
-                                                              {`${
-                                                                  index < 9
-                                                                      ? ` ${index + 1}`
-                                                                      : index + 1
-                                                              }) ${
+                                                              {`${index < 9 ? ` ${index + 1}` : index + 1}) ${
                                                                   org.org
                                                               } (Выручка ${convertNumber(
                                                                   org.revenues,

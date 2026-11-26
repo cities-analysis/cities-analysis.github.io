@@ -138,12 +138,15 @@ class NewMap extends PureComponent {
         const { calculations } = this.props
         const { selectedParameter } = this.state
         if (calculations?.data?.length > 0) {
-            let min = calculations.data[0][selectedParameter]
-            let max = calculations.data[0][selectedParameter]
+            let min
+            let max
             calculations.data.forEach((calculation) => {
-                if (calculation[selectedParameter] > max) max = calculation[selectedParameter]
-                if (calculation[selectedParameter] < min) min = calculation[selectedParameter]
+                const value = calculation[selectedParameter]
+                if (value === null || value === undefined) return
+                if (max === undefined || value > max) max = value
+                if (min === undefined || value < min) min = value
             })
+            if (min === undefined) return [0, 0]
             return [min, max]
         }
         return []
@@ -161,8 +164,11 @@ class NewMap extends PureComponent {
         return calculationsForDisplay?.map((calculation) => {
             const city = selectBorder(calculation.city)
             if (city) {
+                const value = calculation[selectedParameter]
                 const fillColor =
-                    max > 0 ? getColor(calculation[selectedParameter] / max) : 'rgba(0,0,0,0.46)'
+                    max > 0 && value !== null && value !== undefined
+                        ? getColor(value / max)
+                        : 'rgba(0,0,0,0.46)'
                 // const color = max > 0 ? getBorderColor(calculation.city, fillColor) : fillColor
                 return (
                     <GeoJSON

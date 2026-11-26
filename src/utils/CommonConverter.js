@@ -3,6 +3,7 @@ const convertNumber = (
     params = { postfix: '', useShortVersion: false, precision: 2, keepFloat: false }
 ) => {
     if (number === undefined) return ''
+    if (number === null) return 'нет данных'
     const { postfix, useShortVersion, precision, keepFloat } = params
     let convertedNumber = Number.parseFloat(number.toFixed(precision))
     if (postfix === 'чел.' && number === 0) return '-'

@@ -32,15 +32,19 @@ INT_COLUMNS = [
 ]
 STR_COLUMNS = ['executive_model', 'most_profitable']
 
+# Новые показатели (ССЧ и производные) берутся только из файлов *_ssch / *_ext, данные за 2019–2025.
+# Пропуски остаются пропусками (null), а не превращаются в 0.
+NEW_FIELDS = ['ssch', 'labor_productivity', 'capital_labor_ratio', 'avg_labor_cost']
+
 REGION_FIELDS = [
     'revenues', 'fixed_assets', 'wages', 'hhi_revenues', 'hhi_fixed_assets', 'hhi_wages',
     'ti_revenues', 'ti_b_revenues', 'ti_w_revenues', 'ti_fixed_assets', 'ti_b_fixed_assets', 'ti_w_fixed_assets',
     'ti_wages', 'ti_b_wages', 'ti_w_wages',
-]
+] + NEW_FIELDS
 CI_FIELDS = [
     'registered', 'liquidated', 'existing', 'revenues', 'fixed_assets', 'wages',
     'hhi_revenues', 'hhi_fixed_assets', 'hhi_wages',
-]
+] + NEW_FIELDS
 COMMON_FIELDS = [
     'registered', 'liquidated', 'existing',
     'revenues', 'fixed_assets', 'wages', 'hhi_revenues', 'hhi_fixed_assets', 'hhi_wages',
@@ -49,7 +53,7 @@ COMMON_FIELDS = [
     'paid_services', 'catering', 'budget_revenues', 'budget_expenses', 'employees', 'hospitals', 'med_beds',
     'schools', 'preschools', 'students', 'preschool_students', 'unprofitable', 'air_pollution', 'executive_model',
     'licences', 'med_orgs', 'patents', 'unemployment',
-]
+] + NEW_FIELDS
 CITY_CHART_PARAMS = [
     'registered', 'liquidated', 'existing', 'registered_ci', 'liquidated_ci', 'existing_ci',
     'revenues', 'fixed_assets', 'wages', 'hhi_revenues', 'hhi_fixed_assets', 'hhi_wages',
@@ -60,7 +64,7 @@ CITY_CHART_PARAMS = [
     'paid_services', 'catering', 'budget_revenues', 'budget_expenses', 'employees', 'hospitals',
     'med_beds', 'schools', 'preschools', 'students', 'preschool_students', 'unprofitable',
     'air_pollution', 'executive_model', 'licences', 'med_orgs', 'patents', 'unemployment',
-]
+] + NEW_FIELDS + [f'{field}_ci' for field in NEW_FIELDS]
 
 
 def load_dict(path, name):
@@ -72,6 +76,12 @@ def load_dict(path, name):
 
 
 COLUMN_NAMES = load_dict(BACKEND / 'api' / 'calculations.py', 'COLUMNS_NAMES_CITIES')
+COLUMN_NAMES.update({
+    'ssch': 'Среднесписочная численность работников (ССЧ)',
+    'labor_productivity': 'Производительность труда',
+    'capital_labor_ratio': 'Трудовооруженность',
+    'avg_labor_cost': 'Средняя оплата труда',
+})
 CITY_COORDS = json.loads((UPLOAD / 'city_coordinates.json').read_text(encoding='utf-8'))
 REGION_COORDS = load_dict(BACKEND / 'regions_coordinates.py', 'regions_coordinates')
 if (UPLOAD / 'region_coordinates.json').exists():  # дополнения к координатам регионов
@@ -94,6 +104,29 @@ def read_csv(name):
     return df
 
 
+def read_extra(name, keys):
+    """Читает из файла только ключи и 4 новых показателя; пропуски сохраняются как NaN."""
+    df = pd.read_csv(UPLOAD / name, low_memory=False)
+    df = df[~df['temp_block'].astype(bool)].copy()
+    df['indexed'] = df['indexed'].astype(bool)
+    df['year'] = df['year'].round().astype('int64')
+    df = df[keys + NEW_FIELDS].replace([float('inf'), float('-inf')], float('nan'))
+    return df.drop_duplicates(keys)
+
+
+def with_new_fields(df, name, keys):
+    """Добавляет 4 новых показателя к основной таблице (остальные столбцы остаются из основного файла)."""
+    return df.merge(read_extra(name, keys), on=keys, how='left')
+
+
+def clean_null(value):
+    if value is None or (isinstance(value, float) and (math.isnan(value) or math.isinf(value))):
+        return None
+    if hasattr(value, 'item'):
+        return value.item()
+    return value
+
+
 def clean(value):
     if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
         return 0
@@ -103,7 +136,9 @@ def clean(value):
 
 
 def records(df, columns):
-    return [{c: clean(v) for c, v in zip(columns, row)} for row in df[columns].itertuples(index=False, name=None)]
+    cleaners = [clean_null if c in NEW_FIELDS else clean for c in columns]
+    return [{c: f(v) for c, f, v in zip(columns, cleaners, row)}
+            for row in df[columns].itertuples(index=False, name=None)]
 
 
 def dump(path, payload):
@@ -118,11 +153,12 @@ def build_ci_info(ci_df, common_df, categories, city):
         rows = frame[frame['year'] == year]
         if len(rows) != 1:
             return {}
-        row = {k: clean(v) for k, v in rows.iloc[0].items()}
+        row = {k: clean_null(v) if k in NEW_FIELDS else clean(v) for k, v in rows.iloc[0].items()}
         res = {'registered': row['registered'], 'liquidated': row['liquidated'], 'existing': row['existing']}
         if is_orgs:
             res.update(revenues=row['revenues'], fixed_assets=row['fixed_assets'], wages=row['wages'])
         if include_hhi:
+            res.update({field: row[field] for field in NEW_FIELDS if field in row})
             res.update(hhi_revenues=row['hhi_revenues'], hhi_fixed_assets=row['hhi_fixed_assets'],
                        hhi_wages=row['hhi_wages'])
         if 'most_profitable' in row:
@@ -156,12 +192,16 @@ def build_ci_info(ci_df, common_df, categories, city):
 def main():
     if OUT.exists():
         shutil.rmtree(OUT)
-    city_df = read_csv('city_calculations.csv')
-    region_df = read_csv('region_calculations.csv')
+    city_df = with_new_fields(read_csv('city_calculations.csv'), 'city_calculations_ssch.csv',
+                              ['city', 'year', 'indexed'])
+    region_df = with_new_fields(read_csv('region_calculations.csv'), 'region_calculations_ext.csv',
+                                ['region', 'year', 'indexed'])
+    ci_keys = ['city', 'year', 't', 'indexed']
     ci_dfs = {
-        'old': read_csv('city_ci_calculations.csv'),
-        'new': read_csv('new_city_ci_calculations.csv'),
-        '2025': read_csv('new_2025_city_ci_calculations.csv'),
+        'old': with_new_fields(read_csv('city_ci_calculations.csv'), 'city_ci_calculations_ssch.csv', ci_keys),
+        'new': with_new_fields(read_csv('new_city_ci_calculations.csv'), 'new_city_ci_calculations_ssch.csv', ci_keys),
+        '2025': with_new_fields(read_csv('new_2025_city_ci_calculations.csv'),
+                                'new_2025_city_ci_calculations_ssch.csv', ci_keys),
     }
     # Необновляемые эндпоинты (карта, графики) раньше работали с «старой» версией КИ
     ci_main = ci_dfs['old']
@@ -197,7 +237,10 @@ def main():
                 item = dict(row)
                 ci = ci_lookup.get((row['city'], year))
                 for field in CI_FIELDS:
-                    item[f'{field}_ci'] = clean(getattr(ci, field)) if ci is not None else 0
+                    if field in NEW_FIELDS:
+                        item[f'{field}_ci'] = clean_null(getattr(ci, field)) if ci is not None else None
+                    else:
+                        item[f'{field}_ci'] = clean(getattr(ci, field)) if ci is not None else 0
                 rows_ci.append(item)
             dump(f'map/{folder}/city_ci/{year}.json', {'calculations': rows_ci})
         for year in sorted(regions_ix['year'].unique().tolist()):
@@ -213,6 +256,8 @@ def main():
             is_ci = param.endswith('_ci')
             base = param[:-3] if is_ci else param
             frame = ci_ix.sort_values(['city', 'year']) if is_ci else cities_ix
+            if base in NEW_FIELDS:  # данные есть только за 2019–2025, пустые годы на графиках не нужны
+                frame = frame[frame[base].notna()]
             dump(f'chart/{folder}/{param}.json', {'calculations': [
                 {'year': clean(y), base: clean(v), 'city': c}
                 for y, v, c in frame[['year', base, 'city']].itertuples(index=False, name=None)

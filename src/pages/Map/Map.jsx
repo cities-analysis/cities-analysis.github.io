@@ -131,6 +131,36 @@ class Map extends PureComponent {
                             <table style={Style.table}>
                                 <tbody>
                                     <tr>
+                                        <td>Среднесписочная численность (ССЧ):</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.ssch, { postfix: 'чел.' })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Производительность труда:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.labor_productivity, {
+                                                postfix: '₽',
+                                            })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Трудовооруженность:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.capital_labor_ratio, {
+                                                postfix: '₽',
+                                            })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Средняя оплата труда:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.avg_labor_cost, {
+                                                postfix: '₽',
+                                            })}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>Индекс Тейла (Выручка):</td>
                                         <td style={Style.tableData}>
                                             {convertNumber(calculation.ti_revenues, {
@@ -261,6 +291,36 @@ class Map extends PureComponent {
                                         <td>Оплата труда:</td>
                                         <td style={Style.tableData}>
                                             {convertNumber(calculation.wages, { postfix: '₽' })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Среднесписочная численность (ССЧ):</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.ssch, { postfix: 'чел.' })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Производительность труда:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.labor_productivity, {
+                                                postfix: '₽',
+                                            })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Трудовооруженность:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.capital_labor_ratio, {
+                                                postfix: '₽',
+                                            })}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Средняя оплата труда:</td>
+                                        <td style={Style.tableData}>
+                                            {convertNumber(calculation.avg_labor_cost, {
+                                                postfix: '₽',
+                                            })}
                                         </td>
                                     </tr>
                                     <tr>

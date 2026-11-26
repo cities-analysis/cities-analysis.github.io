@@ -101,6 +101,46 @@ export const PARAMETERS = [
         title: 'HHI по оплате труда (КИ)',
     },
     {
+        id: 'ssch',
+        title: 'Среднесписочная численность (ССЧ)',
+        postfix: 'чел.',
+    },
+    {
+        id: 'ssch_ci',
+        title: 'Среднесписочная численность (ССЧ) (КИ)',
+        postfix: 'чел.',
+    },
+    {
+        id: 'labor_productivity',
+        title: 'Производительность труда',
+        postfix: '₽',
+    },
+    {
+        id: 'labor_productivity_ci',
+        title: 'Производительность труда (КИ)',
+        postfix: '₽',
+    },
+    {
+        id: 'capital_labor_ratio',
+        title: 'Трудовооруженность',
+        postfix: '₽',
+    },
+    {
+        id: 'capital_labor_ratio_ci',
+        title: 'Трудовооруженность (КИ)',
+        postfix: '₽',
+    },
+    {
+        id: 'avg_labor_cost',
+        title: 'Средняя оплата труда',
+        postfix: '₽',
+    },
+    {
+        id: 'avg_labor_cost_ci',
+        title: 'Средняя оплата труда (КИ)',
+        postfix: '₽',
+    },
+    {
         id: 'dea',
         title: 'DEA',
     },

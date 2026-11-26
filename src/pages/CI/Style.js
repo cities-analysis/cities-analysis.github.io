@@ -10,7 +10,7 @@ const Style = {
         width: '900px',
     },
     commonInfo: {
-        height: '120px',
+        minHeight: '120px',
     },
     selectCity: {
         paddingTop: 10,
