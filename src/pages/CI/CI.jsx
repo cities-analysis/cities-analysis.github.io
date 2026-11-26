@@ -105,25 +105,25 @@ class CI extends PureComponent {
                 ? 'нет данных'
                 : convertNumber(value, { postfix, useShortVersion: true })
         return [items.slice(0, 2), items.slice(2)].map((row) => (
-            <Space direction='horizontal' key={row[0].field}>
-                {row.map(({ field, label, title, postfix }) => (
-                    <React.Fragment key={field}>
-                        <Text style={Style.text}>{label}</Text>
-                        {currentInfo ? (
-                            <div>
-                                <Tooltip title={`${title} — предприятия в области КИ`}>
-                                    {format(currentCIInfo?.[field], postfix)}
-                                </Tooltip>
-                                {' / '}
-                                <Tooltip title={`${title} — все предприятия`}>
-                                    {format(currentInfo?.[field], postfix)}
-                                </Tooltip>
-                            </div>
-                        ) : (
-                            <Skeleton.Button active size='small' />
-                        )}
-                    </React.Fragment>
-                ))}
+            <Space direction='horizontal' key={row[0].field} style={{ paddingTop: '20px' }}>
+                {row.flatMap(({ field, label, title, postfix }) => [
+                    <Text key={`${field}-label`} style={Style.text}>
+                        {label}
+                    </Text>,
+                    currentInfo ? (
+                        <div key={`${field}-value`}>
+                            <Tooltip title={`${title} — предприятия в области КИ`}>
+                                {format(currentCIInfo?.[field], postfix)}
+                            </Tooltip>
+                            {' / '}
+                            <Tooltip title={`${title} — все предприятия`}>
+                                {format(currentInfo?.[field], postfix)}
+                            </Tooltip>
+                        </div>
+                    ) : (
+                        <Skeleton.Button key={`${field}-value`} active size='small' />
+                    ),
+                ])}
             </Space>
         ))
     }

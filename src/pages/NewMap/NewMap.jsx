@@ -235,7 +235,7 @@ class NewMap extends PureComponent {
                     <Space direction='vertical' style={Style.filters}>
                         <SelectParameter
                             selectedParameter={selectedParameter}
-                            width={270}
+                            width={420}
                             onChangeSelectedParameter={(parameter) =>
                                 this.setState({
                                     selectedParameter: parameter,

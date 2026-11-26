@@ -105,7 +105,7 @@ class Charts extends PureComponent {
                                 selectedParameter={
                                     isMultiParams ? selectedMultiParameters : selectedParameter
                                 }
-                                width={270}
+                                width={420}
                                 onChangeSelectedParameter={(parameter) => {
                                     if (isMultiParams) {
                                         getCalculationsForChart(
