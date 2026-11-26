@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Checkbox, Select, Space, Typography } from 'antd'
@@ -14,6 +14,7 @@ import * as actions from '../../redux/actions/calculations'
 import { convertNumber } from '../../utils/CommonConverter'
 import SettingsSwitch from '../../components/SettingsSwitch/SettingsSwitch'
 import pagesState from '../pagesState'
+import regionsBorders from '../../regionsBorders/allRegions.json'
 
 const { Text } = Typography
 
@@ -429,6 +430,18 @@ class Map extends PureComponent {
                             url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         />
+                        {settings.isRegion && (
+                            <GeoJSON
+                                data={regionsBorders}
+                                style={{
+                                    color: '#d4380d',
+                                    weight: 2,
+                                    opacity: 0.9,
+                                    fillColor: '#fa8c16',
+                                    fillOpacity: 0.08,
+                                }}
+                            />
+                        )}
                         {this.renderMarkers()}
                     </MapContainer>
                 </div>
