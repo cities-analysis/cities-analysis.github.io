@@ -50,7 +50,7 @@ class CI extends PureComponent {
             getCIInfo(cities.data[0])
         }
         const CIData = ciInfo?.data
-        const currentYear = Object.keys(CIData ?? {})?.[0]
+        const currentYear = Object.keys(CIData ?? {}).at(-1) // по умолчанию самый свежий год
         if (currentYear && !ciInfo?.isLoading && prevProps.ciInfo?.isLoading) {
             this.setState({
                 currentYear:

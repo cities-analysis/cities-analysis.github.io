@@ -20,6 +20,10 @@ const { Text } = Typography
 
 export const URL = 'map'
 
+// По умолчанию показываем самый свежий год (или ранее выбранный, если он есть в списке)
+const pickYear = (years, previousYear) =>
+    previousYear && years.includes(previousYear) ? previousYear : Math.max(...years)
+
 class Map extends PureComponent {
     constructor(props) {
         super(props)
@@ -51,13 +55,9 @@ class Map extends PureComponent {
             !cityYears.isLoading &&
             cityYears?.data?.length > 0
         ) {
-            this.setState({
-                year:
-                    previouslySelectedYear && previouslySelectedYear in regionYears.data
-                        ? previouslySelectedYear
-                        : cityYears.data[0],
-            })
-            getCalculationsOnMap(cityYears.data[0])
+            const defaultYear = pickYear(cityYears.data, previouslySelectedYear)
+            this.setState({ year: defaultYear })
+            getCalculationsOnMap(defaultYear)
         }
         if (
             settings.isRegion &&
@@ -65,13 +65,9 @@ class Map extends PureComponent {
             !regionYears.isLoading &&
             prevRegionYears?.data?.length > 0
         ) {
-            this.setState({
-                year:
-                    previouslySelectedYear && previouslySelectedYear in regionYears.data
-                        ? previouslySelectedYear
-                        : regionYears.data[0],
-            })
-            getCalculationsOnMap(regionYears.data[0])
+            const defaultYear = pickYear(regionYears.data, previouslySelectedYear)
+            this.setState({ year: defaultYear })
+            getCalculationsOnMap(defaultYear)
         }
         if (
             settings.isRegion !== prevProps.settings.isRegion ||

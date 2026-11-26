@@ -101,8 +101,9 @@ class NewMap extends PureComponent {
         const { min, max, year, selectedCities } = this.state
         const prevYears = prevProps.years
         if (prevYears.isLoading && !years.isLoading && years.data?.length > 0) {
-            this.setState({ year: years.data[0] })
-            getCalculationsOnMap(years.data[0])
+            const latestYear = Math.max(...years.data)
+            this.setState({ year: latestYear })
+            getCalculationsOnMap(latestYear)
         }
         if (calculations?.data?.length > 0 && min === undefined && max === undefined) {
             const minMax = this.getMinMaxValue()
