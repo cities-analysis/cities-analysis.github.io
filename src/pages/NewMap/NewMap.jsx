@@ -17,13 +17,7 @@ import { convertNumber } from '../../utils/CommonConverter'
 import { selectBorder } from '../../citiesBorders/selectBorder'
 import SettingsSwitch from '../../components/SettingsSwitch/SettingsSwitch'
 import pagesState from '../pagesState'
-import region1 from '../../regionsBorders/АлтайскийКрай.json'
-import region2 from '../../regionsBorders/КемеровскаяОбласть.json'
-import region3 from '../../regionsBorders/СвердловскаяОбласть.json'
-import region4 from '../../regionsBorders/ТомскаяОбласть.json'
-import region5 from '../../regionsBorders/ХантыМансийскийАвтономныйОкруг.json'
-import region6 from '../../regionsBorders/ЧелябинскаяОбласть.json'
-import region7 from '../../regionsBorders/РеспубликаХакасия.json'
+import regionsBorders from '../../regionsBorders/allRegions.json'
 
 const { Text } = Typography
 
@@ -202,9 +196,9 @@ class NewMap extends PureComponent {
 
     renderGeoJSONRegions() {
         const { selectedParameter } = this.state
-        return [region1, region2, region3, region4, region5, region6, region7].map((region) => (
+        return regionsBorders.features.map((region) => (
             <GeoJSON
-                key={`region${region.id}${selectedParameter}`}
+                key={`region${region.properties.name}${selectedParameter}`}
                 data={region}
                 style={{
                     color: '#000000',
