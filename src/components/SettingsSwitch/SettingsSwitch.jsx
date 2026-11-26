@@ -7,9 +7,10 @@ import CiVersionSwitch from '../CiVersionSwitch/CiVersionSwitch'
 
 class SettingsSwitch extends PureComponent {
     render() {
-        const { switchIndexedEnabled, switchIsRegionEnabled, switchCiVersionEnabled } = this.props
+        const { switchIndexedEnabled, switchIsRegionEnabled, switchCiVersionEnabled, inline } =
+            this.props
         return (
-            <div style={Style.container}>
+            <div style={inline ? Style.containerInline : Style.container}>
                 {switchIndexedEnabled ? <IndexedSwitch /> : undefined}
                 {switchIsRegionEnabled ? <RegionSwitch /> : undefined}
                 {switchCiVersionEnabled ? <CiVersionSwitch /> : undefined}
@@ -22,12 +23,14 @@ SettingsSwitch.propTypes = {
     switchIndexedEnabled: PropTypes.bool,
     switchIsRegionEnabled: PropTypes.bool,
     switchCiVersionEnabled: PropTypes.bool,
+    inline: PropTypes.bool,
 }
 
 SettingsSwitch.defaultProps = {
     switchIndexedEnabled: true,
     switchIsRegionEnabled: true,
     switchCiVersionEnabled: false,
+    inline: false,
 }
 
 export default SettingsSwitch

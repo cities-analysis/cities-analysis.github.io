@@ -32,8 +32,9 @@ class CiVersionSwitch extends Component {
                 <Text style={Style.text}>Версия данных:</Text>
                 <Radio.Group
                     options={[
-                        { label: 'Старые', value: 'old' },
-                        { label: 'Новые', value: 'new' },
+                        { label: 'Методология авторов', value: 'old' },
+                        { label: 'Классификация ОКВЭД от 21.12.2023', value: 'new' },
+                        { label: 'Классификация ОКВЭД от 23.04.2025', value: '2025' },
                     ]}
                     onChange={({ target }) => this.switch(target.value)}
                     value={settings.ciVersion}

@@ -158,7 +158,11 @@ def main():
         shutil.rmtree(OUT)
     city_df = read_csv('city_calculations.csv')
     region_df = read_csv('region_calculations.csv')
-    ci_dfs = {'old': read_csv('city_ci_calculations.csv'), 'new': read_csv('new_city_ci_calculations.csv')}
+    ci_dfs = {
+        'old': read_csv('city_ci_calculations.csv'),
+        'new': read_csv('new_city_ci_calculations.csv'),
+        '2025': read_csv('new_2025_city_ci_calculations.csv'),
+    }
     # Необновляемые эндпоинты (карта, графики) раньше работали с «старой» версией КИ
     ci_main = ci_dfs['old']
 

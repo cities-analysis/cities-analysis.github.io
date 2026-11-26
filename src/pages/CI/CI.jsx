@@ -265,7 +265,7 @@ class CI extends PureComponent {
         const years = Object.keys(ciInfo?.data ?? {})
         return (
             <div>
-                <SettingsSwitch switchIsRegionEnabled={false} switchCiVersionEnabled />
+                <SettingsSwitch switchIsRegionEnabled={false} switchCiVersionEnabled inline />
                 <div style={Style.ci}>
                     <Space direction='vertical' style={Style.container}>
                         <h1>Показатели креативных индустрий</h1>
